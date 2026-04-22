@@ -58,7 +58,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+    self.view.backgroundColor = [SeafTheme primaryBackgroundColor];
     [self setupScrollView];
     [self setupInfoView];
     [self setupLoadingIndicator];
@@ -78,7 +78,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+    self.scrollView.backgroundColor = [SeafTheme primaryBackgroundColor];
     // Keep default zoom at 1.0, so the image is displayed at its original scale
     self.scrollView.minimumZoomScale = 1.0;
     self.scrollView.maximumZoomScale = 3.0;
@@ -377,8 +377,8 @@
     
     // If we need to show the info view, make sure it's updated and visible
     if (show) {
-        // Restore background color from view mode (black) to normal mode (#F9F9F9)
-        UIColor *normalBgColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+        // Restore normal-mode background (theme-aware) from fullscreen black
+        UIColor *normalBgColor = [SeafTheme primaryBackgroundColor];
         self.view.backgroundColor = normalBgColor;
         self.scrollView.backgroundColor = normalBgColor;
         self.imageView.backgroundColor = [UIColor clearColor];
@@ -752,12 +752,13 @@
                         if (leftOverlay) leftOverlay.alpha = 1.0;
                         if (rightOverlay) rightOverlay.alpha = 1.0;
                         
-                        // Change background color from black to light gray
-                        self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
-                        self.scrollView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+                        // Change background from black to normal-mode theme background
+                        UIColor *normalBgColor = [SeafTheme primaryBackgroundColor];
+                        self.view.backgroundColor = normalBgColor;
+                        self.scrollView.backgroundColor = normalBgColor;
                         self.imageView.backgroundColor = [UIColor clearColor];
                         if (self.livePhotoPlayerView) {
-                            self.livePhotoPlayerView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+                            self.livePhotoPlayerView.backgroundColor = normalBgColor;
                         }
                     } completion:nil];
                     
@@ -1433,7 +1434,7 @@
     self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
     self.progressLabel.center = CGPointMake(self.view.center.x, self.view.center.y + self.activityIndicator.bounds.size.height / 2 + 25); // Position below indicator
     self.progressLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    self.progressLabel.textColor = [UIColor grayColor]; // Changed text color to gray
+    self.progressLabel.textColor = [SeafTheme secondaryText];
     self.progressLabel.backgroundColor = [UIColor clearColor]; // Removed background color
     self.progressLabel.textAlignment = NSTextAlignmentCenter;
     self.progressLabel.font = [UIFont systemFontOfSize:14];
@@ -1784,13 +1785,14 @@
             self.livePhotoPlayerView.backgroundColor = [UIColor blackColor];
         }
     } else {
-        // Restore background to light mode - must explicitly set because VC may be reused
+        // Restore normal-mode theme background — must explicitly set because VC may be reused
         // after being in view mode (black background), and viewDidLoad won't be called again
-        self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
-        self.scrollView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+        UIColor *normalBgColor = [SeafTheme primaryBackgroundColor];
+        self.view.backgroundColor = normalBgColor;
+        self.scrollView.backgroundColor = normalBgColor;
         self.imageView.backgroundColor = [UIColor clearColor];
         if (self.livePhotoPlayerView) {
-            self.livePhotoPlayerView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+            self.livePhotoPlayerView.backgroundColor = normalBgColor;
         }
     }
     // When a new view is about to appear during a transition, make sure layout is correct

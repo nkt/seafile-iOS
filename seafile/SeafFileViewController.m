@@ -207,11 +207,11 @@ enum {
 
     if (@available(iOS 15.0, *)) {
         UINavigationBarAppearance *barAppearance = [UINavigationBarAppearance new];
-        barAppearance.backgroundColor = [UIColor whiteColor];
-        
+        barAppearance.backgroundColor = [SeafTheme primarySurface];
+
         self.navigationController.navigationBar.standardAppearance = barAppearance;
         self.navigationController.navigationBar.scrollEdgeAppearance = barAppearance;
-        
+
         self.tableView.sectionHeaderTopPadding = 0;
     }
     
@@ -352,7 +352,7 @@ enum {
         // Add selection count label
         UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, containerView.frame.size.width - 24 - 20, 44)];
         countLabel.font = [UIFont systemFontOfSize:17];
-        countLabel.textColor = [UIColor blackColor];
+        countLabel.textColor = [SeafTheme primaryText];
         countLabel.text = NSLocalizedString(@"Select items", @"Seafile");
         [containerView addSubview:countLabel];
         
@@ -1500,7 +1500,7 @@ enum {
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     [navController setModalPresentationStyle:UIModalPresentationFullScreen];
     navController.navigationBar.tintColor = BAR_COLOR;
-    navController.navigationBar.backgroundColor = [UIColor whiteColor];
+    navController.navigationBar.backgroundColor = [SeafTheme primarySurface];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
@@ -2963,10 +2963,10 @@ enum {
             _searchController.searchBar.layoutMargins = UIEdgeInsetsMake(0, 42, 0, 0);
         }
         
-        // Configure search bar appearance like system search - Light gray background
-        UIColor *lightGrayColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]; // Light gray
-        _searchController.searchBar.barTintColor = lightGrayColor;
-        _searchController.searchBar.backgroundColor = lightGrayColor;
+        // Configure search bar appearance like system search
+        UIColor *searchBarBg = [SeafTheme secondarySurface];
+        _searchController.searchBar.barTintColor = searchBarBg;
+        _searchController.searchBar.backgroundColor = searchBarBg;
         
         // Remove any background images to show the default system appearance
         [_searchController.searchBar setBackgroundImage:nil forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
@@ -2979,12 +2979,12 @@ enum {
         if (@available(iOS 13.0, *)) {
             UITextField *searchField = _searchController.searchBar.searchTextField;
             searchField.placeholder = NSLocalizedString(@"Search files in this library", @"Seafile");
-            searchField.backgroundColor = [UIColor whiteColor]; // Changed to white
+            searchField.backgroundColor = [SeafTheme primarySurface];
 
             // Add custom search icon to the left of the text field
             UIImage *searchIcon = [[UIImage imageNamed:@"fileNav_search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             UIImageView *searchIconImageView = [[UIImageView alloc] initWithImage:searchIcon];
-            searchIconImageView.tintColor = [UIColor secondaryLabelColor]; // Standard system color for icons
+            searchIconImageView.tintColor = [SeafTheme secondaryText];
             
             // Create a container view for the leftView to provide padding
             CGFloat iconSize = 16.0; // Adjusted icon size
@@ -3005,7 +3005,7 @@ enum {
         if (@available(iOS 15.0, *)) {
             UINavigationBarAppearance *searchBarAppearance = [[UINavigationBarAppearance alloc] init];
             [searchBarAppearance configureWithOpaqueBackground];
-            searchBarAppearance.backgroundColor = [UIColor whiteColor]; // Same as navigation bar
+            searchBarAppearance.backgroundColor = [SeafTheme primarySurface];
             
             // Apply to navigation bar instead of search bar
             self.navigationController.navigationBar.standardAppearance = searchBarAppearance;
@@ -3143,12 +3143,12 @@ enum {
     
     // Create custom view
     UIView *customToolView = [[UIView alloc] initWithFrame:frame];
-    customToolView.backgroundColor = [UIColor whiteColor];
-    
+    customToolView.backgroundColor = [SeafTheme primarySurface];
+
     // Add top border
     CALayer *topBorder = [CALayer layer];
     topBorder.frame = CGRectMake(0, 0, customToolView.frame.size.width, 0.5);
-    topBorder.backgroundColor = [UIColor lightGrayColor].CGColor;
+    topBorder.backgroundColor = [SeafTheme separator].CGColor;
     [customToolView.layer addSublayer:topBorder];
     
     // First row buttons - 5 buttons
