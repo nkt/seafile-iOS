@@ -20,6 +20,7 @@
 #import "Version.h"
 #import "SeafWechatHelper.h"
 #import "SeafCustomInputAlertViewController.h"
+#import "SeafTheme.h"
 
 @interface SeafAppDelegate () <UITabBarControllerDelegate, CLLocationManagerDelegate, WXApiDelegate>
 
@@ -312,6 +313,11 @@
     [self clearUserCacheFile];
 }
 
+- (void)themePreferenceDidChange:(NSNotification *)notification
+{
+    [SeafTheme applyPreferenceToWindow:self.window];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     Info("%@", [[NSBundle mainBundle] infoDictionary]);
@@ -344,6 +350,12 @@
     _startNav = (UINavigationController *)self.window.rootViewController;
 
     _startVC = (StartViewController *)_startNav.topViewController;
+
+    [SeafTheme applyPreferenceToWindow:self.window];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(themePreferenceDidChange:)
+                                                 name:SeafThemeDidChangeNotification
+                                               object:nil];
 
 
 #if !(TARGET_IPHONE_SIMULATOR)

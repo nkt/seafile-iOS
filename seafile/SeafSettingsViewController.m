@@ -29,6 +29,7 @@
 #import "SeafPrivacyPolicyViewController.h"
 #import "SeafBackupGuideViewController.h"
 #import "SeafRealmManager.h"
+#import "SeafTheme.h"
 
 #define CELL_PADDING_HORIZONTAL 10.0
 #define CELL_CORNER_RADIUS 10.0
@@ -39,9 +40,15 @@ enum {
     SECTION_UPDOWNLOAD,
     SECTION_CACHE,
     SECTION_ENC,
+    SECTION_APPEARANCE,
     SECTION_ABOUT,
     SECTION_LOGOUT,
 };
+
+static inline NSInteger SeafSettingsStoryboardSection(NSInteger viewSection) {
+    if (viewSection <= SECTION_ENC) return viewSection;
+    return viewSection - 1;
+}
 
 enum CAMERA_CELL{
     CELL_CAMERA_AUTO = 0,
@@ -598,6 +605,75 @@ enum {
     }
 }
 
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [super numberOfSectionsInTableView:tableView] + 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == SECTION_APPEARANCE) {
+        if (@available(iOS 13.0, *)) {
+            return 1;
+        }
+        return 0;
+    }
+    return [super tableView:tableView numberOfRowsInSection:SeafSettingsStoryboardSection(section)];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SECTION_APPEARANCE) {
+        return [self appearanceCell];
+    }
+    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
+                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
+    return [super tableView:tableView cellForRowAtIndexPath:mapped];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SECTION_APPEARANCE) {
+        return 50;
+    }
+    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
+                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
+    return [super tableView:tableView heightForRowAtIndexPath:mapped];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SECTION_APPEARANCE) {
+        return 1;
+    }
+    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
+                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
+    return [super tableView:tableView indentationLevelForRowAtIndexPath:mapped];
+}
+
+- (UITableViewCell *)appearanceCell
+{
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.text = NSLocalizedString(@"Appearance", @"Seafile");
+
+    NSArray *items = @[NSLocalizedString(@"System", @"Seafile"),
+                       NSLocalizedString(@"Light", @"Seafile"),
+                       NSLocalizedString(@"Dark", @"Seafile")];
+    UISegmentedControl *segmented = [[UISegmentedControl alloc] initWithItems:items];
+    segmented.selectedSegmentIndex = (NSInteger)[SeafTheme currentPreference];
+    [segmented addTarget:self action:@selector(appearanceSegmentedChanged:) forControlEvents:UIControlEventValueChanged];
+    [segmented sizeToFit];
+    cell.accessoryView = segmented;
+    return cell;
+}
+
+- (void)appearanceSegmentedChanged:(UISegmentedControl *)sender
+{
+    [SeafTheme setPreference:(SeafThemePreference)sender.selectedSegmentIndex];
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -611,8 +687,12 @@ enum {
     cell.indentationLevel = 1;  // Each indentation level is typically 10 points
     cell.indentationWidth = 30; // Override the default width
 
+    // Appearance cell keeps its segmented-control accessoryView untouched.
+    if (indexPath.section == SECTION_APPEARANCE) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else
     // Check if this is the logout cell or the privacy policy cell
-    if (indexPath.section == SECTION_LOGOUT || 
+    if (indexPath.section == SECTION_LOGOUT ||
         (indexPath.section == SECTION_ABOUT && indexPath.row == CELL_PRIVACY)) {
         // Create a custom accessory view with the chevron shifted 5px to the left
         // Instead of using the standard accessory type
@@ -863,11 +943,18 @@ enum {
         NSLocalizedString(@"Upload & Download", @"Seafile"),
         NSLocalizedString(@"Cache", @"Seafile"),
         NSLocalizedString(@"Encrypted Libraries", @"Seafile"),
+        NSLocalizedString(@"Appearance", @"Seafile"),
         NSLocalizedString(@"About", @"Seafile"),
         @"",
     };
     if (section < SECTION_ACCOUNT || section > SECTION_LOGOUT)
         return nil;
+    if (section == SECTION_APPEARANCE) {
+        if (@available(iOS 13.0, *)) {
+            return sectionNames[section];
+        }
+        return nil;
+    }
     if (section == SECTION_CAMERA && _connection.inAutoSync) {
         NSString *remainStr = @"";
         if (_connection.isCheckingPhotoLibrary) {
@@ -913,13 +1000,30 @@ enum {
     return headerView;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == SECTION_APPEARANCE) {
+        if (@available(iOS 13.0, *)) {
+            return 35;
+        }
+        return 0;
+    }
     NSString *title = [self tableView:tableView titleForHeaderInSection:section];
     if (!title || [title isEqualToString:@""]) {
         return 12; // Small height for empty header
     }
     return 35; // Standard height for headers with titles
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == SECTION_APPEARANCE) {
+        if (@available(iOS 13.0, *)) {
+            return 0;
+        }
+        return 0;
+    }
+    return UITableViewAutomaticDimension;
 }
 
 - (void)viewDidUnload {
