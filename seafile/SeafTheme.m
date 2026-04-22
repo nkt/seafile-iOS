@@ -15,7 +15,12 @@ NSString * const kSeafThemePreferenceKey = @"SeafThemePreference";
 
 + (NSUserDefaults *)sharedDefaults
 {
-    return [[NSUserDefaults alloc] initWithSuiteName:SEAFILE_SUITE_NAME];
+    static NSUserDefaults *defaults;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaults = [[NSUserDefaults alloc] initWithSuiteName:SEAFILE_SUITE_NAME];
+    });
+    return defaults;
 }
 
 + (SeafThemePreference)currentPreference
@@ -199,26 +204,6 @@ NSString * const kSeafThemePreferenceKey = @"SeafThemePreference";
 {
     if (@available(iOS 13.0, *)) return [UIColor systemFillColor];
     return [UIColor colorWithWhite:0.90 alpha:1.0];
-}
-
-#pragma mark - Accents
-
-+ (UIColor *)destructiveRed
-{
-    if (@available(iOS 13.0, *)) return [UIColor systemRedColor];
-    return [UIColor redColor];
-}
-
-#pragma mark - Scrims
-
-+ (UIColor *)scrimBackground
-{
-    return [UIColor colorWithWhite:0.0 alpha:0.6];
-}
-
-+ (UIColor *)modalBackdrop
-{
-    return [UIColor colorWithWhite:0.0 alpha:0.4];
 }
 
 @end

@@ -1017,12 +1017,7 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == SECTION_APPEARANCE) {
-        if (@available(iOS 13.0, *)) {
-            return 0;
-        }
-        return 0;
-    }
+    if (section == SECTION_APPEARANCE) return 0;
     return UITableViewAutomaticDimension;
 }
 

@@ -1728,7 +1728,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
     }
     btn.frame = CGRectMake(0, 0, 20, 20);
     btn.contentEdgeInsets = UIEdgeInsetsZero;
-    btn.backgroundColor = [UIColor whiteColor];
+    btn.backgroundColor = [SeafTheme primarySurface];
     btn.layer.cornerRadius = 10.0;
     btn.clipsToBounds = YES;
     [btn addTarget:self action:@selector(onDeleteAttachmentButton:) forControlEvents:UIControlEventTouchUpInside];

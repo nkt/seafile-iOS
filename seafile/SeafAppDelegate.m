@@ -346,8 +346,8 @@
     self.window.backgroundColor = [SeafTheme primarySurface];
     self.autoBackToDefaultAccount = false;
     _monitors = [[NSMutableArray alloc] init];
-    _startNav.view.backgroundColor = [SeafTheme primarySurface];
     _startNav = (UINavigationController *)self.window.rootViewController;
+    _startNav.view.backgroundColor = [SeafTheme primarySurface];
 
     _startVC = (StartViewController *)_startNav.topViewController;
 
@@ -602,7 +602,7 @@
     _tabbarController.navigationController.navigationBar.backgroundColor = [SeafTheme primarySurface];
     _tabbarController.delegate = self;
     if (ios7)
-        _tabbarController.view.backgroundColor = [SeafTheme secondaryText];
+        _tabbarController.view.backgroundColor = [SeafTheme secondarySurface];
 
 }
 

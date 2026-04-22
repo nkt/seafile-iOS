@@ -56,13 +56,6 @@ extern NSString * const kSeafThemePreferenceKey;
 + (UIColor *)separator;
 + (UIColor *)fill;
 
-// Accents
-+ (UIColor *)destructiveRed;
-
-// Scrims
-+ (UIColor *)scrimBackground;
-+ (UIColor *)modalBackdrop;
-
 @end
 
 NS_ASSUME_NONNULL_END
