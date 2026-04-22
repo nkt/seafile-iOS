@@ -23,6 +23,7 @@
 #import "SeafDetailViewController.h"
 #import "SeafVideoPlayerViewController.h"
 #import "SeafPhotoGalleryViewController.h"
+#import "SeafTheme.h"
 #import "SeafCacheManager.h"
 #import "SeafRealmManager.h"
 
@@ -75,7 +76,7 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     
     if (@available(iOS 15.0, *)) {
         UINavigationBarAppearance *barAppearance = [UINavigationBarAppearance new];
-        barAppearance.backgroundColor = [UIColor whiteColor];
+        barAppearance.backgroundColor = [SeafTheme primarySurface];
         
         self.navigationController.navigationBar.standardAppearance = barAppearance;
         self.navigationController.navigationBar.scrollEdgeAppearance = barAppearance;

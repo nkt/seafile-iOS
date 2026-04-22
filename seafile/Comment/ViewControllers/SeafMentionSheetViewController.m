@@ -1,6 +1,7 @@
 //  SeafMentionSheetViewController.m
 //
 #import "SeafMentionSheetViewController.h"
+#import "SeafTheme.h"
 
 static UIImage *SeafDefaultAvatarImage(void)
 {
@@ -31,7 +32,7 @@ static UIImage *SeafDefaultAvatarImage(void)
         self.selectionStyle = UITableViewCellSelectionStyleDefault;
         self.textLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold];
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
-        self.detailTextLabel.textColor = [UIColor secondaryLabelColor];
+        self.detailTextLabel.textColor = [SeafTheme secondaryText];
         self.imageView.layer.cornerRadius = 18.0;
         self.imageView.clipsToBounds = YES;
     }
@@ -119,7 +120,7 @@ static UIImage *SeafDefaultAvatarImage(void)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor systemBackgroundColor];
+    self.view.backgroundColor = [SeafTheme primarySurface];
     self.title = NSLocalizedString(@"Select member", nil);
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

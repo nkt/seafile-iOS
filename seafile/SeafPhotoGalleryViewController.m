@@ -292,7 +292,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:254/255.0 green:255/255.0 blue:255/255.0 alpha:1.0]; // #FEFFFF
+    self.view.backgroundColor = [SeafTheme primarySurface];
 
     // Determine title setting method based on whether SeafFile is initialized
     NSString *titleText;
@@ -309,8 +309,8 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
                                                                  viewController:self];
     self.navigationItem.titleView = titleLabel;
     
-    // Create back button using styling utility, set to gray
-    UIColor *grayColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0]; // Medium gray
+    // Create back button using styling utility
+    UIColor *grayColor = [SeafTheme secondaryText];
     self.navigationItem.leftBarButtonItem = [SeafNavigationBarStyler createBackButtonWithTarget:self
                                                                                        action:@selector(dismissGallery)
                                                                                         color:grayColor];
@@ -454,7 +454,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
     CGFloat stripHeight = 45; // Total height is fixed at 45
     CGRect frame = CGRectMake(0, self.view.bounds.size.height - stripHeight, self.view.bounds.size.width, stripHeight);
     self.thumbnailCollection = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
-    self.thumbnailCollection.backgroundColor = [UIColor colorWithRed:254/255.0 green:255/255.0 blue:255/255.0 alpha:1.0]; // #FEFFFF
+    self.thumbnailCollection.backgroundColor = [SeafTheme primarySurface];
     self.thumbnailCollection.showsHorizontalScrollIndicator = NO;
     
     // Register cell
@@ -1343,7 +1343,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
                     btn.imageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     // Set tintColor: gray (#666666) for all states (selected states differ by icon style, not color)
-                    btn.tintColor = [UIColor colorWithRed:102.0/255.0 green:102.0/255.0 blue:102.0/255.0 alpha:1.0]; // Gray #666666
+                    btn.tintColor = [SeafTheme secondaryText];
                 }
                 break;
             }
@@ -1822,7 +1822,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
     
     self.toolbarView = [[UIView alloc] initWithFrame:tbFrame];
     self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-    self.toolbarView.backgroundColor = [UIColor colorWithRed:254/255.0 green:255/255.0 blue:255/255.0 alpha:1.0]; // #FEFFFF
+    self.toolbarView.backgroundColor = [SeafTheme primarySurface];
     [self.view addSubview:self.toolbarView];
 
     // Update icon names to those in the design
@@ -1895,7 +1895,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
             
             // Set tintColor: gray (#666666) for non-selected info icons
             if (!isInfoSelected) {
-                btn.tintColor = [UIColor colorWithRed:102.0/255.0 green:102.0/255.0 blue:102.0/255.0 alpha:1.0]; // Gray #666666
+                btn.tintColor = [SeafTheme secondaryText];
             }
             
             // Push the icon down slightly within the button's frame
@@ -2108,7 +2108,7 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
                     
                     // Set tintColor: gray (#666666) for non-selected state
                     if (!selected) {
-                        btn.tintColor = [UIColor colorWithRed:102.0/255.0 green:102.0/255.0 blue:102.0/255.0 alpha:1.0];
+                        btn.tintColor = [SeafTheme secondaryText];
                     }
                 }
                 break;

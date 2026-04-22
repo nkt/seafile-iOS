@@ -23,6 +23,7 @@
 #import "SeafGlobal.h"
 #import "SeafMentionSheetViewController.h"
 #import "SeafSdocUserMapper.h"
+#import "SeafTheme.h"
 
 static NSString * const kSeafDocCommentCellId = @"kSeafDocCommentCellId";
 static NSTimeInterval const kRelatedUsersCacheTTL = 300.0; // 5 minutes
@@ -73,7 +74,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor systemBackgroundColor];
+    self.view.backgroundColor = [SeafTheme primarySurface];
     _attachmentDeleteButtons = [NSMapTable strongToWeakObjectsMapTable];
 
     self.navigationItem.title = self.docDisplayName.length > 0 ? self.docDisplayName : NSLocalizedString(@"Comments", nil);
@@ -83,8 +84,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
     _service = [SeafDocsCommentService new];
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    // Match unresolved comment cell background: #F5F5F5
-    _tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    _tableView.backgroundColor = [SeafTheme groupedSurface];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -249,7 +249,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
         img.image = tipImage;
     } else if (@available(iOS 13.0, *)) {
         img.image = [UIImage systemImageNamed:@"tray"];
-        img.tintColor = [UIColor tertiaryLabelColor];
+        img.tintColor = [SeafTheme tertiaryText];
     }
     img.contentMode = UIViewContentModeScaleAspectFit;
     img.translatesAutoresizingMaskIntoConstraints = NO;
@@ -263,7 +263,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
         androidEmpty = NSLocalizedString(@"No comments", nil);
     }
     lab.text = androidEmpty;
-    lab.textColor = [UIColor labelColor];
+    lab.textColor = [SeafTheme primaryText];
     lab.textAlignment = NSTextAlignmentCenter;
     lab.font = [UIFont systemFontOfSize:16 weight:UIFontWeightRegular];
     lab.numberOfLines = 0;
@@ -968,20 +968,12 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
 
 - (void)_menuRowTouchDown:(UIButton *)sender
 {
-    if (@available(iOS 13.0, *)) {
-        sender.backgroundColor = [UIColor tertiarySystemFillColor];
-    } else {
-        sender.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    }
+    sender.backgroundColor = [SeafTheme fill];
 }
 
 - (void)_menuRowTouchUp:(UIButton *)sender
 {
-    if (@available(iOS 13.0, *)) {
-        sender.backgroundColor = UIColor.clearColor;
-    } else {
-        sender.backgroundColor = UIColor.clearColor;
-    }
+    sender.backgroundColor = UIColor.clearColor;
 }
 
 - (void)_onCustomSheetMark:(UIButton *)sender
@@ -1356,7 +1348,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
         attrs[NSFontAttributeName] = f;
     }
     if (!attrs[NSForegroundColorAttributeName]) {
-        UIColor *c = tv.textColor ?: ([UIColor respondsToSelector:@selector(labelColor)] ? [UIColor labelColor] : [UIColor blackColor]);
+        UIColor *c = tv.textColor ?: [SeafTheme primaryText];
         attrs[NSForegroundColorAttributeName] = c;
     }
     // Current content: if not attributed, convert from plain with default attrs

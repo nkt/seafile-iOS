@@ -8,6 +8,7 @@
 #import "SeafLivePhotoPlayerView.h"
 #import "Debug.h"
 #import "SeafMotionPhotoExtractor.h"
+#import "SeafTheme.h"
 
 @interface SeafLivePhotoPlayerView ()
 
@@ -51,7 +52,7 @@
 }
 
 - (void)commonInit {
-    self.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+    self.backgroundColor = [SeafTheme primaryBackgroundColor];
     self.clipsToBounds = YES;
     
     _imageContentMode = UIViewContentModeScaleAspectFit;

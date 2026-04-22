@@ -1,6 +1,7 @@
 //  SeafTagChipCell.m
 
 #import "SeafTagChipCell.h"
+#import "SeafTheme.h"
 
 @interface SeafTagChipCell ()
 @property (nonatomic, strong) UILabel *label;
@@ -67,7 +68,8 @@
 {
     self.label.text = text ?: @"";
     UIColor *bg = [self.class colorFromHex:colorHex] ?: [UIColor clearColor];
-    // Text color: #212529 per design spec (fallback if not provided)
+    // Text color: #212529 per design spec (fallback if not provided) — static because chip bg
+    // usually comes from server hex and chip text must read against that static bg.
     UIColor *tc = [self.class colorFromHex:textColorHex] ?: [UIColor colorWithRed:0x21/255.0 green:0x25/255.0 blue:0x29/255.0 alpha:1.0];
     self.contentView.backgroundColor = bg;
     self.label.textColor = tc;
@@ -80,12 +82,10 @@
 - (void)configureDotStyleWithText:(NSString *)text dotColor:(NSString *)dotColorHex textColor:(NSString *)textColorHex
 {
     self.label.text = text ?: @"";
-    // Text color: #212529 per design spec
-    UIColor *tc = [self.class colorFromHex:textColorHex] ?: [UIColor colorWithRed:0x21/255.0 green:0x25/255.0 blue:0x29/255.0 alpha:1.0];
-    UIColor *dot = [self.class colorFromHex:dotColorHex] ?: [UIColor colorWithWhite:0.95 alpha:1.0];
-    self.contentView.backgroundColor = [UIColor whiteColor];
-    // Border color: #DBDBDB per design spec
-    self.contentView.layer.borderColor = [UIColor colorWithRed:0xDB/255.0 green:0xDB/255.0 blue:0xDB/255.0 alpha:1.0].CGColor;
+    UIColor *tc = [self.class colorFromHex:textColorHex] ?: [SeafTheme primaryText];
+    UIColor *dot = [self.class colorFromHex:dotColorHex] ?: [SeafTheme fill];
+    self.contentView.backgroundColor = [SeafTheme primarySurface];
+    self.contentView.layer.borderColor = [SeafTheme separator].CGColor;
     self.contentView.layer.borderWidth = 1.0;
     self.label.textColor = tc;
 

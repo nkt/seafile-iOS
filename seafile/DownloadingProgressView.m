@@ -8,6 +8,7 @@
 
 #import "DownloadingProgressView.h"
 #import "Debug.h"
+#import "SeafTheme.h"
 
 @interface DownloadingProgressView ()
 @property id<SeafPreView> item;
@@ -25,7 +26,7 @@
     self.autoresizesSubviews = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     if (ios7) {
-        self.cancelBt.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        self.cancelBt.layer.borderColor = [[SeafTheme separator] CGColor];
         self.cancelBt.layer.borderWidth = 0.5f;
         self.cancelBt.layer.cornerRadius = 5.0f;
     } else {

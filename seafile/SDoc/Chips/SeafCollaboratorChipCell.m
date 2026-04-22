@@ -1,6 +1,7 @@
 //  SeafCollaboratorChipCell.m
 
 #import "SeafCollaboratorChipCell.h"
+#import "SeafTheme.h"
 
 static UIImage *SeafDefaultAvatarImage(void)
 {
@@ -28,7 +29,7 @@ static UIImage *SeafDefaultAvatarImage(void)
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+        self.contentView.backgroundColor = [SeafTheme fill];
         self.contentView.layer.cornerRadius = 16;
         self.contentView.layer.masksToBounds = YES;
 
@@ -51,7 +52,7 @@ static UIImage *SeafDefaultAvatarImage(void)
         _nameLabel = [UILabel new];
         _nameLabel.font = [UIFont systemFontOfSize:15];
         // Text color: #212529 per design spec
-        _nameLabel.textColor = [UIColor colorWithRed:0x21/255.0 green:0x25/255.0 blue:0x29/255.0 alpha:1.0];
+        _nameLabel.textColor = [SeafTheme primaryText];
 
         [h addArrangedSubview:_avatarView];
         [h addArrangedSubview:_nameLabel];
