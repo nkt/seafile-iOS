@@ -3145,11 +3145,11 @@ enum {
     UIView *customToolView = [[UIView alloc] initWithFrame:frame];
     customToolView.backgroundColor = [SeafTheme primarySurface];
 
-    // Add top border
-    CALayer *topBorder = [CALayer layer];
-    topBorder.frame = CGRectMake(0, 0, customToolView.frame.size.width, 0.5);
-    topBorder.backgroundColor = [SeafTheme separator].CGColor;
-    [customToolView.layer addSublayer:topBorder];
+    // Add top border as a UIView so the dynamic separator color adapts to theme changes
+    UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, customToolView.frame.size.width, 0.5)];
+    topBorder.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    topBorder.backgroundColor = [SeafTheme separator];
+    [customToolView addSubview:topBorder];
     
     // First row buttons - 5 buttons
     NSArray *firstRowTitles = @[

@@ -150,6 +150,14 @@ static CGFloat const kIPadAlertHeightEncrypted = 395.0f; // Calculated height fo
     }
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a snapshot; re-apply so the cancel button border tracks the theme.
+    if (self.cancelButton) {
+        self.cancelButton.layer.borderColor = [SeafTheme primaryText].CGColor;
+    }
+}
+
 - (void)setupViews {
     self.view.backgroundColor = [UIColor clearColor];
 

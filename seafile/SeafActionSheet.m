@@ -9,6 +9,7 @@
 #import "SeafActionSheet.h"
 #import "SeafCell.h"
 #import "SeafAppDelegate.h"
+#import "SeafTheme.h"
 
 #define kHostsCornerRadius 12.0f
 
@@ -167,6 +168,12 @@ static BOOL disableCustomEasing = NO;
 
 + (Class)layerClass {
     return [SeafActionSheetLayer class];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CAShapeLayer.fillColor is a CGColor snapshot; re-resolve against the current theme.
+    ((CAShapeLayer *)self.layer).fillColor = [SeafTheme elevatedSurface].CGColor;
 }
 
 @end

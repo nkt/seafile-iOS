@@ -467,12 +467,14 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
     // Add to view
     [self.view addSubview:self.thumbnailCollection];
 
-    // Add overlays for left and right edges
+    // Add overlays for left and right edges — fade from the themed surface to clear
+    // so the strip edges blend with the background in both light and dark modes.
+    UIColor *surface = [SeafTheme primarySurface];
     self.leftThumbnailOverlay = [[UIView alloc] init];
     self.leftThumbnailOverlay.userInteractionEnabled = NO;
-    self.leftThumbnailOverlay.backgroundColor = [UIColor clearColor]; // Ensure background is clear
+    self.leftThumbnailOverlay.backgroundColor = [UIColor clearColor];
     CAGradientLayer *leftGradient = [CAGradientLayer layer];
-    leftGradient.colors = @[(id)[UIColor colorWithWhite:1.0 alpha:1.0].CGColor, (id)[UIColor colorWithWhite:1.0 alpha:0.0].CGColor];
+    leftGradient.colors = @[(id)surface.CGColor, (id)[surface colorWithAlphaComponent:0.0].CGColor];
     leftGradient.startPoint = CGPointMake(0.0, 0.5);
     leftGradient.endPoint = CGPointMake(1.0, 0.5);
     [self.leftThumbnailOverlay.layer insertSublayer:leftGradient atIndex:0];
@@ -480,9 +482,9 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
 
     self.rightThumbnailOverlay = [[UIView alloc] init];
     self.rightThumbnailOverlay.userInteractionEnabled = NO;
-    self.rightThumbnailOverlay.backgroundColor = [UIColor clearColor]; // Ensure background is clear
+    self.rightThumbnailOverlay.backgroundColor = [UIColor clearColor];
     CAGradientLayer *rightGradient = [CAGradientLayer layer];
-    rightGradient.colors = @[(id)[UIColor colorWithWhite:1.0 alpha:0.0].CGColor, (id)[UIColor colorWithWhite:1.0 alpha:1.0].CGColor];
+    rightGradient.colors = @[(id)[surface colorWithAlphaComponent:0.0].CGColor, (id)surface.CGColor];
     rightGradient.startPoint = CGPointMake(0.0, 0.5);
     rightGradient.endPoint = CGPointMake(1.0, 0.5);
     [self.rightThumbnailOverlay.layer insertSublayer:rightGradient atIndex:0];
@@ -1768,6 +1770,23 @@ typedef NS_ENUM(NSInteger, SeafPhotoToolbarButtonType) {
     _loadedImagesRange = NSMakeRange(self.currentIndex, 1);
     
     Debug(@"Memory warning: Cleared non-current image cache, current load range: %@", NSStringFromRange(_loadedImagesRange));
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CAGradientLayer snapshots CGColors, so re-apply the surface-derived colors
+    // when the interface style changes.
+    UIColor *surface = [SeafTheme primarySurface];
+    NSArray *leftColors = @[(id)surface.CGColor, (id)[surface colorWithAlphaComponent:0.0].CGColor];
+    NSArray *rightColors = @[(id)[surface colorWithAlphaComponent:0.0].CGColor, (id)surface.CGColor];
+    if (self.leftThumbnailOverlay.layer.sublayers.count > 0) {
+        CAGradientLayer *grad = (CAGradientLayer *)self.leftThumbnailOverlay.layer.sublayers.firstObject;
+        if ([grad isKindOfClass:[CAGradientLayer class]]) grad.colors = leftColors;
+    }
+    if (self.rightThumbnailOverlay.layer.sublayers.count > 0) {
+        CAGradientLayer *grad = (CAGradientLayer *)self.rightThumbnailOverlay.layer.sublayers.firstObject;
+        if ([grad isKindOfClass:[CAGradientLayer class]]) grad.colors = rightColors;
+    }
 }
 
 - (void)dealloc {

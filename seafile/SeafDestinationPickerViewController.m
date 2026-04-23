@@ -101,6 +101,15 @@ typedef NS_ENUM(NSInteger, SeafDestSegment) {
     [self logListContainerLayoutWithTag:@"viewDidLayoutSubviews"];
     [self applyRoundedCornersForRecentIfNeeded];
 }
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a snapshot; re-apply so the outlined cancel button border tracks the theme.
+    if (self.cancelButton) {
+        self.cancelButton.layer.borderColor = [SeafTheme separator].CGColor;
+    }
+}
 - (void)setupFixedTopReturnHeader
 {
     // Build a fixed header pinned above the embedded table views

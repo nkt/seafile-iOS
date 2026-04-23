@@ -201,6 +201,14 @@ static CGFloat const kInitialOffScreenBottomConstant = 350.0; // Adjust if alert
     [self unregisterForKeyboardNotifications]; // Ensure removed for all device types
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a snapshot; re-apply so the cancel button border tracks the theme.
+    if (_cancelButton) {
+        _cancelButton.layer.borderColor = [SeafTheme primaryText].CGColor;
+    }
+}
+
 - (void)setupViews {
     if (!IsIpad()) {
         // Accessing self.backgroundDimmingView will trigger its lazy initializer.
