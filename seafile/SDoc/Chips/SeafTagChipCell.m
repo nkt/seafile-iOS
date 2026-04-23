@@ -22,7 +22,7 @@
 
         _label = [UILabel new];
         _label.font = [UIFont systemFontOfSize:15 weight:UIFontWeightRegular];
-        _label.textColor = [UIColor whiteColor];
+        _label.textColor = [SeafTheme primaryText];
         _label.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:_label];
 
@@ -70,9 +70,9 @@
 {
     self.label.text = text ?: @"";
     UIColor *bg = [self.class colorFromHex:colorHex] ?: [UIColor clearColor];
-    // Text color: #212529 per design spec (fallback if not provided) — static because chip bg
-    // usually comes from server hex and chip text must read against that static bg.
-    UIColor *tc = [self.class colorFromHex:textColorHex] ?: [UIColor colorWithRed:0x21/255.0 green:0x25/255.0 blue:0x29/255.0 alpha:1.0];
+    // Text color falls back to the adaptive primary label so the chip remains readable in dark
+    // mode when the server didn't supply an explicit color pair.
+    UIColor *tc = [self.class colorFromHex:textColorHex] ?: [SeafTheme primaryText];
     self.contentView.backgroundColor = bg;
     self.label.textColor = tc;
     self.contentView.layer.borderWidth = 0;

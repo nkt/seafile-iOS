@@ -392,12 +392,16 @@ typedef NS_ENUM(NSInteger, SeafBackupButtonType) {
     UIImage *unselectedImage;
     UIImage *selectedImage;
 
+    UIColor *unselectedTint = [SeafTheme tertiaryText];
+    if (@available(iOS 13.0, *)) {
+        unselectedTint = [unselectedTint resolvedColorWithTraitCollection:self.traitCollection];
+    }
     if (type == SeafBackupButtonTypeHeic || type == SeafBackupButtonTypeUseJpg) {
-        unselectedImage = [[UIImage systemImageNamed:@"circle"] imageWithTintColor:[UIColor grayColor] renderingMode:UIImageRenderingModeAlwaysOriginal];
-        selectedImage = [[UIImage systemImageNamed:@"checkmark.circle.fill"] imageWithTintColor:[UIColor orangeColor] renderingMode:UIImageRenderingModeAlwaysOriginal];
+        unselectedImage = [[UIImage systemImageNamed:@"circle"] imageWithTintColor:unselectedTint renderingMode:UIImageRenderingModeAlwaysOriginal];
+        selectedImage = [[UIImage systemImageNamed:@"checkmark.circle.fill"] imageWithTintColor:[SeafTheme accentOrange] renderingMode:UIImageRenderingModeAlwaysOriginal];
     } else {
-        unselectedImage = [[UIImage systemImageNamed:@"circle"] imageWithTintColor:[UIColor grayColor] renderingMode:UIImageRenderingModeAlwaysOriginal];
-        selectedImage = [[UIImage systemImageNamed:@"circle.inset.filled"] imageWithTintColor:[UIColor orangeColor] renderingMode:UIImageRenderingModeAlwaysOriginal];
+        unselectedImage = [[UIImage systemImageNamed:@"circle"] imageWithTintColor:unselectedTint renderingMode:UIImageRenderingModeAlwaysOriginal];
+        selectedImage = [[UIImage systemImageNamed:@"circle.inset.filled"] imageWithTintColor:[SeafTheme accentOrange] renderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     [button setImage:unselectedImage forState:UIControlStateNormal];
     [button setImage:selectedImage forState:UIControlStateSelected];

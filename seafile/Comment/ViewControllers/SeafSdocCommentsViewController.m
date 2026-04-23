@@ -1799,7 +1799,7 @@ static NSMutableDictionary<NSString *, NSDate *> *gRelatedUsersCacheTS;
     UIButton *retry = [UIButton buttonWithType:UIButtonTypeSystem];
     [retry setTitle:NSLocalizedString(@"Retry", nil) forState:UIControlStateNormal];
     retry.translatesAutoresizingMaskIntoConstraints = NO;
-    retry.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
+    retry.backgroundColor = [SeafTheme elevatedSurface];
     retry.layer.cornerRadius = 14.0;
     retry.contentEdgeInsets = UIEdgeInsetsMake(6, 12, 6, 12);
     [retry addTarget:self action:@selector(onRetryAttachmentButton:) forControlEvents:UIControlEventTouchUpInside];

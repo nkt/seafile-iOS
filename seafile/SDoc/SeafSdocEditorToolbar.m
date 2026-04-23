@@ -151,7 +151,13 @@ static const CGFloat kBaseWidth = 414.0;
     self.listStack.layoutMarginsRelativeArrangement = YES;
     self.listStack.spacing = 8.0;
     
-    UIColor *selectedBgColor = [UIColor colorWithRed:0.933 green:0.886 blue:0.816 alpha:1.0];
+    UIColor *selectedBgLight = [UIColor colorWithRed:0.933 green:0.886 blue:0.816 alpha:1.0];
+    UIColor *selectedBgColor = selectedBgLight;
+    if (@available(iOS 13.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            selectedBgColor = [[SeafTheme accentOrange] colorWithAlphaComponent:0.25];
+        }
+    }
     UIImage *selectedBgImg = [self createResizableRoundedImageWithColor:selectedBgColor cornerRadius:6.0 inset:6.0];
     
     self.btnUnordered = [self createButtonWithImageName:@"unordered list-nomal" action:@selector(onUnorderedTapped)];

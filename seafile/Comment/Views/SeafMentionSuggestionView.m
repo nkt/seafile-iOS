@@ -11,7 +11,11 @@ static UIImage *SeafDefaultAvatarImage(void)
     CGFloat side = 40.0;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(side, side), NO, 0);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [[UIColor colorWithWhite:0.9 alpha:1.0] setFill];
+    UIColor *fill = [SeafTheme secondarySurface];
+    if (@available(iOS 13.0, *)) {
+        fill = [fill resolvedColorWithTraitCollection:UITraitCollection.currentTraitCollection];
+    }
+    [fill setFill];
     CGContextFillEllipseInRect(ctx, CGRectMake(0, 0, side, side));
     UIImage *generated = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
