@@ -145,34 +145,41 @@
     self.livePhotoBadge.backgroundColor = [UIColor clearColor];
     self.livePhotoBadge.layer.masksToBounds = NO;
     
-    // Background: #F2F2F9 75%, border: #C7C7C7 75%
+    UIColor *badgeBgLight = [[UIColor colorWithRed:242/255.0 green:242/255.0 blue:249/255.0 alpha:1.0] colorWithAlphaComponent:0.75];
+    UIColor *badgeBg;
+    if (@available(iOS 13.0, *)) {
+        UIColor *badgeBgDark = [[UIColor colorWithRed: 44/255.0 green: 44/255.0 blue: 46/255.0 alpha:1.0] colorWithAlphaComponent:0.75];
+        badgeBg = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traits) {
+            return traits.userInterfaceStyle == UIUserInterfaceStyleDark ? badgeBgDark : badgeBgLight;
+        }];
+    } else {
+        badgeBg = badgeBgLight;
+    }
     UIView *contentView = [[UIView alloc] initWithFrame:self.livePhotoBadge.bounds];
-    contentView.backgroundColor = [[UIColor colorWithRed:242/255.0 green:242/255.0 blue:249/255.0 alpha:1.0] colorWithAlphaComponent:0.75];
+    contentView.backgroundColor = badgeBg;
     contentView.layer.cornerRadius = badgeHeight / 2.0;
     contentView.layer.masksToBounds = YES;
     contentView.layer.borderWidth = 0.5;
-    contentView.layer.borderColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:199/255.0 alpha:0.75].CGColor;
+    contentView.layer.borderColor = [SeafTheme separator].CGColor;
     contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     contentView.tag = 100;
     [self.livePhotoBadge addSubview:contentView];
-    
-    // Icon: #1C1C1C 60%
+
     UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(leftPadding, (badgeHeight - iconSize) / 2.0, iconSize, iconSize)];
     if (@available(iOS 13.0, *)) {
         UIImageSymbolConfiguration *config = [UIImageSymbolConfiguration configurationWithPointSize:iconSize weight:UIImageSymbolWeightRegular];
         UIImage *livePhotoSymbol = [UIImage systemImageNamed:@"livephoto" withConfiguration:config];
         iconView.image = livePhotoSymbol;
-        iconView.tintColor = [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:0.6];
+        iconView.tintColor = [SeafTheme secondaryText];
     }
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.tag = 101;
     [contentView addSubview:iconView];
-    
-    // Text: #1C1C1C 60%
+
     UILabel *liveLabel = [[UILabel alloc] init];
     liveLabel.text = NSLocalizedString(@"LIVE", @"Live Photo badge text");
     liveLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
-    liveLabel.textColor = [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:0.6];
+    liveLabel.textColor = [SeafTheme secondaryText];
     liveLabel.tag = 102;
     [liveLabel sizeToFit];
     liveLabel.frame = CGRectMake(leftPadding + iconSize + spacing, 
