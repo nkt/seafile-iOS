@@ -178,7 +178,7 @@
     avatarView.contentMode = UIViewContentModeScaleAspectFill;
     avatarView.layer.cornerRadius = 11.0;
     avatarView.layer.masksToBounds = YES;
-    avatarView.backgroundColor = [SeafTheme tertiaryText];
+    avatarView.backgroundColor = [SeafTheme fill];
     
     NSString *avatarURL = [self.infoModel objectForKey:@"OwnerAvatar"];
     if (avatarURL) {
