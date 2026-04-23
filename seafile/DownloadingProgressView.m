@@ -67,8 +67,17 @@
 {
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-    
+
     return [formatter stringFromNumber:[NSNumber numberWithFloat:progress]];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a static snapshot; re-resolve the dynamic separator color on appearance change.
+    if (ios7) {
+        self.cancelBt.layer.borderColor = [[SeafTheme separator] CGColor];
+    }
 }
 
 

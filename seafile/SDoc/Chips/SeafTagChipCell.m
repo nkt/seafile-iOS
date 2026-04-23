@@ -8,6 +8,7 @@
 @property (nonatomic, strong) NSLayoutConstraint *labelLeadingConstraint;
 @property (nonatomic, strong) CALayer *dotLayer;
 @property (nonatomic, assign) CGFloat lastDotDiameter;
+@property (nonatomic, assign) BOOL usesDynamicBorder;
 @end
 
 @implementation SeafTagChipCell
@@ -47,6 +48,7 @@
     self.labelLeadingConstraint.constant = 10;
     self.lastDotDiameter = 0;
     self.dotLayer.hidden = YES;
+    self.usesDynamicBorder = NO;
 }
 
 - (void)layoutSubviews
@@ -87,6 +89,7 @@
     self.contentView.backgroundColor = [SeafTheme primarySurface];
     self.contentView.layer.borderColor = [SeafTheme separator].CGColor;
     self.contentView.layer.borderWidth = 1.0;
+    self.usesDynamicBorder = YES;
     self.label.textColor = tc;
 
     // Ensure dot layer
@@ -109,6 +112,15 @@
 
     // Shift label to the right of dot: left padding 5 + dot size + spacing to text (4 for right padding of dot area)
     self.labelLeadingConstraint.constant = 5 + d + 4;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a static snapshot; re-resolve the dynamic separator when the trait collection changes.
+    if (self.usesDynamicBorder) {
+        self.contentView.layer.borderColor = [SeafTheme separator].CGColor;
+    }
 }
 
 + (UIColor *)colorFromHex:(NSString *)hex
