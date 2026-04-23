@@ -41,7 +41,7 @@
 {
     [super prepareForReuse];
     self.contentView.backgroundColor = [UIColor clearColor];
-    self.label.textColor = [UIColor secondaryLabelColor];
+    self.label.textColor = [SeafTheme secondaryText];
     self.label.text = @"";
     self.contentView.layer.borderWidth = 0;
     self.contentView.layer.borderColor = nil;
