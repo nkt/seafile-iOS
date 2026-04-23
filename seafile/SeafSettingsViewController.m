@@ -1098,6 +1098,7 @@ enum {
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SeafUploadTaskStatusChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SeafDownloadTaskStatusChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SeafAccountInfoUpdated" object:nil];
 }
 
