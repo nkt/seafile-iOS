@@ -40,15 +40,9 @@ enum {
     SECTION_UPDOWNLOAD,
     SECTION_CACHE,
     SECTION_ENC,
-    SECTION_APPEARANCE,
     SECTION_ABOUT,
     SECTION_LOGOUT,
 };
-
-static inline NSInteger SeafSettingsStoryboardSection(NSInteger viewSection) {
-    if (viewSection <= SECTION_ENC) return viewSection;
-    return viewSection - 1;
-}
 
 enum CAMERA_CELL{
     CELL_CAMERA_AUTO = 0,
@@ -80,6 +74,7 @@ enum {
     CELL_SERVER = 0,
     CELL_VERSION,
     CELL_PRIVACY,
+    CELL_APPEARANCE,
 };
 
 #define MSG_RESET_UPLOADED NSLocalizedString(@"Do you want reset the uploaded photos?", @"Seafile")
@@ -607,50 +602,47 @@ enum {
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (BOOL)isAppearanceIndexPath:(NSIndexPath *)indexPath
 {
-    return [super numberOfSectionsInTableView:tableView] + 1;
+    if (@available(iOS 13.0, *)) {
+        return indexPath.section == SECTION_ABOUT && indexPath.row == CELL_APPEARANCE;
+    }
+    return NO;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SECTION_APPEARANCE) {
+    NSInteger rows = [super tableView:tableView numberOfRowsInSection:section];
+    if (section == SECTION_ABOUT) {
         if (@available(iOS 13.0, *)) {
-            return 1;
+            return rows + 1;
         }
-        return 0;
     }
-    return [super tableView:tableView numberOfRowsInSection:SeafSettingsStoryboardSection(section)];
+    return rows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SECTION_APPEARANCE) {
+    if ([self isAppearanceIndexPath:indexPath]) {
         return [self appearanceCell];
     }
-    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
-                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
-    return [super tableView:tableView cellForRowAtIndexPath:mapped];
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SECTION_APPEARANCE) {
+    if ([self isAppearanceIndexPath:indexPath]) {
         return 50;
     }
-    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
-                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
-    return [super tableView:tableView heightForRowAtIndexPath:mapped];
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SECTION_APPEARANCE) {
+    if ([self isAppearanceIndexPath:indexPath]) {
         return 1;
     }
-    NSIndexPath *mapped = [NSIndexPath indexPathForRow:indexPath.row
-                                             inSection:SeafSettingsStoryboardSection(indexPath.section)];
-    return [super tableView:tableView indentationLevelForRowAtIndexPath:mapped];
+    return [super tableView:tableView indentationLevelForRowAtIndexPath:indexPath];
 }
 
 - (UITableViewCell *)appearanceCell
@@ -688,7 +680,7 @@ enum {
     cell.indentationWidth = 30; // Override the default width
 
     // Appearance cell keeps its segmented-control accessoryView untouched.
-    if (indexPath.section == SECTION_APPEARANCE) {
+    if ([self isAppearanceIndexPath:indexPath]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
     } else
     // Check if this is the logout cell or the privacy policy cell
@@ -943,18 +935,11 @@ enum {
         NSLocalizedString(@"Upload & Download", @"Seafile"),
         NSLocalizedString(@"Cache", @"Seafile"),
         NSLocalizedString(@"Encrypted Libraries", @"Seafile"),
-        NSLocalizedString(@"Appearance", @"Seafile"),
         NSLocalizedString(@"About", @"Seafile"),
         @"",
     };
     if (section < SECTION_ACCOUNT || section > SECTION_LOGOUT)
         return nil;
-    if (section == SECTION_APPEARANCE) {
-        if (@available(iOS 13.0, *)) {
-            return sectionNames[section];
-        }
-        return nil;
-    }
     if (section == SECTION_CAMERA && _connection.inAutoSync) {
         NSString *remainStr = @"";
         if (_connection.isCheckingPhotoLibrary) {
@@ -1002,12 +987,6 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == SECTION_APPEARANCE) {
-        if (@available(iOS 13.0, *)) {
-            return 35;
-        }
-        return 0;
-    }
     NSString *title = [self tableView:tableView titleForHeaderInSection:section];
     if (!title || [title isEqualToString:@""]) {
         return 12; // Small height for empty header
@@ -1017,7 +996,6 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == SECTION_APPEARANCE) return 0;
     return UITableViewAutomaticDimension;
 }
 

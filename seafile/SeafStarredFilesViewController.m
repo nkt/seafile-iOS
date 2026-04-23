@@ -106,6 +106,8 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
     self.tableView.estimatedRowHeight = 55.0;
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.backgroundColor = [SeafTheme primarySurface];
+    self.view.backgroundColor = [SeafTheme primarySurface];
     [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:nil] forCellReuseIdentifier:@"SeafCell"];
     
     self.navigationController.navigationBar.tintColor = BAR_COLOR;

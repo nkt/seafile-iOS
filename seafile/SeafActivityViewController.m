@@ -68,6 +68,8 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60.0;
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.backgroundColor = [SeafTheme primarySurface];
+    self.view.backgroundColor = [SeafTheme primarySurface];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
