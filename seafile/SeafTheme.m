@@ -55,7 +55,13 @@ NSString * const kSeafThemePreferenceKey = @"SeafThemePreference";
 {
     if (!viewController) return;
     if (@available(iOS 13.0, *)) {
-        UIUserInterfaceStyle style = [self userInterfaceStyleForPreference:[self currentPreference]];
+        // Extensions: when the main app has no stored preference (fresh install or
+        // cleared app-group defaults), fall back to Light instead of following the
+        // host so share/action UIs match pre-dark-mode behavior.
+        NSNumber *stored = [[self sharedDefaults] objectForKey:kSeafThemePreferenceKey];
+        UIUserInterfaceStyle style = stored
+            ? [self userInterfaceStyleForPreference:[self currentPreference]]
+            : UIUserInterfaceStyleLight;
         viewController.overrideUserInterfaceStyle = style;
         if (viewController.navigationController) {
             viewController.navigationController.overrideUserInterfaceStyle = style;

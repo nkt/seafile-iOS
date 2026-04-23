@@ -179,7 +179,7 @@ static NSString *cellIdentifier = @"SeafSyncInfoCell";
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 3, tableView.bounds.size.width - 10, 18)];
     label.font = [UIFont systemFontOfSize:12];
     label.text = text;
-    label.textColor = [UIColor darkTextColor];
+    label.textColor = [SeafTheme primaryText];
     label.backgroundColor = [UIColor clearColor];
     [headerView setBackgroundColor:[SeafTheme groupedSurface]];
     [headerView addSubview:label];
