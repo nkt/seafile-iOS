@@ -409,6 +409,7 @@
     };
 
     [SVProgressHUD setBackgroundColor:[SeafTheme secondarySurface]];
+    [SVProgressHUD setForegroundColor:[SeafTheme primaryText]];
 
     [self performSelectorInBackground:@selector(delayedInit) withObject:nil];
 
