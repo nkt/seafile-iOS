@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SeafTheme.h"
 
-#define SEAFILE_SUITE_NAME @"group.com.seafile.seafilePro"
-#define APP_ID @"com.seafile.seafilePro"
-#define SEAF_FILE_PROVIDER @"com.seafile.seafilePro.fileprovider"
+#define SEAFILE_SUITE_NAME @"group.me.nkt.seafilepro"
+#define APP_ID @"me.nkt.seafilepro"
+#define SEAF_FILE_PROVIDER @"me.nkt.seafilepro.fileprovider"
 
 #define kPrimaryBackgroundColor [SeafTheme primaryBackgroundColor]
 
