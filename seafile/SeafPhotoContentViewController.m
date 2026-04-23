@@ -199,6 +199,14 @@
     [self.view addSubview:self.livePhotoBadge];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    // CGColor is a static snapshot; re-resolve the dynamic separator color on appearance change.
+    UIView *badgeContent = [self.livePhotoBadge viewWithTag:100];
+    badgeContent.layer.borderColor = [SeafTheme separator].CGColor;
+}
+
 - (void)showLivePhotoIcon {
     if (!self.livePhotoBadge) return;
     
