@@ -831,7 +831,7 @@ static inline CGFloat seaf_lerp(CGFloat a, CGFloat b, CGFloat t) { return a + (b
     self.pagingView.pagingDataSource = self;
     self.pagingView.pagingDelegate = self;
     self.pagingView.interPageSpacing = 20.0;
-    self.pagingView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+    self.pagingView.backgroundColor = SeafGalleryChromeVisibleBackground();
     [self.view addSubview:self.pagingView];
 
     if (self.preViewItems.count > 0 && self.currentIndex < self.preViewItems.count) {
@@ -3259,11 +3259,11 @@ static const NSUInteger kEvictMaxDistance   = 5;  // evict VCs further than ± 5
 
 #pragma mark - Chrome (single source of truth)
 
-/// Light gray background used by the gallery and per-page contentVCs in the
-/// non-immersive (chrome-visible) state. Kept here as a single constant so
+/// Theme-aware background used by the gallery and per-page contentVCs in the
+/// non-immersive (chrome-visible) state. Kept here as a single source so
 /// the value matches everywhere the page background is reset.
 static UIColor *SeafGalleryChromeVisibleBackground(void) {
-    return [UIColor colorWithRed:249.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1.0]; // #F9F9F9
+    return [SeafTheme primaryBackgroundColor];
 }
 
 - (void)setChromeHidden:(BOOL)hidden
@@ -3575,7 +3575,7 @@ static UIColor *SeafGalleryChromeVisibleBackground(void) {
 - (void)updateCachedVCsForImmersiveMode:(BOOL)immersive {
     UIColor *bgColor = immersive
         ? [UIColor blackColor]
-        : [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+        : SeafGalleryChromeVisibleBackground();
     for (NSNumber *key in [self.contentVCCache allKeys]) {
         SeafPhotoContentViewController *vc = [self.contentVCCache objectForKey:key];
         if (vc != self.currentContentVC) {

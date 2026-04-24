@@ -2426,7 +2426,7 @@
 /// Transitions ContentVC's own appearance back to normal mode (light backgrounds, show Live badge).
 /// Called when zoom returns to minimum scale.
 - (void)exitImmersiveAppearanceAnimated:(BOOL)animated {
-    UIColor *normalBgColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0]; // #F9F9F9
+    UIColor *normalBgColor = [SeafTheme primaryBackgroundColor];
     void (^changes)(void) = ^{
         self.view.backgroundColor = normalBgColor;
         self.scrollView.backgroundColor = normalBgColor;
